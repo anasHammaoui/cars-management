@@ -1,0 +1,42 @@
+<nav class="bg-blue-600 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center">
+        <a routerLink="/" class="text-xl font-bold hover:text-blue-200">
+          🚗 Concession Auto
+        </a>
+      </div>
+      
+      <div class="hidden md:flex items-center space-x-4">
+        <a routerLink="/cars" class="hover:text-blue-200 px-3 py-2 rounded">Voitures</a>
+        @if (isAuthenticated$ | async) {
+          <a routerLink="/cars/add" class="hover:text-blue-200 px-3 py-2 rounded">Ajouter une voiture</a>
+        }
+      </div>
+      
+      <div class="flex items-center">
+        @if (isAuthenticated$ | async) {
+          <div class="relative">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-white text-blue-600 rounded-full flex items-center justify-center font-bold">
+                @if (currentUser$ | async; as user) {
+                  <span>{{ user.username.charAt(0).toUpperCase() }}</span>
+                }
+              </div>
+              @if (currentUser$ | async; as user) {
+                <span class="hidden sm:block">{{ user.firstName }} {{ user.lastName }}</span>
+              }
+              <button (click)="onLogout()" class="bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded text-sm">
+                Se déconnecter
+              </button>
+            </div>
+          </div>
+        } @else {
+          <a routerLink="/login" class="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded">
+            Se connecter
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+</nav>
