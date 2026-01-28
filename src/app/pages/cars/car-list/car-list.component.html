@@ -1,0 +1,129 @@
+<div class="max-w-7xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-slate-900">Liste des Voitures</h1>
+    @if (isAuthenticated$ | async) {
+      <a routerLink="/cars/add" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-medium">
+        Ajouter une voiture
+      </a>
+    }
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-6">
+    <div class="flex flex-wrap gap-4">
+      <div class="flex bg-slate-100 rounded-lg p-1">
+        <button 
+          (click)="setViewMode('table')"
+          type="button"
+          [class.bg-white]="(viewMode$ | async) === 'table'"
+          [class.shadow-sm]="(viewMode$ | async) === 'table'"
+          class="px-4 py-2 rounded text-sm font-medium transition cursor-pointer">
+          Tableau
+        </button>
+        <button 
+          (click)="setViewMode('grid')"
+          type="button"
+          [class.bg-white]="(viewMode$ | async) === 'grid'"
+          [class.shadow-sm]="(viewMode$ | async) === 'grid'"
+          class="px-4 py-2 rounded text-sm font-medium transition cursor-pointer">
+          Grille
+        </button>
+      </div>
+
+      <select [(ngModel)]="selectedAvailability" (change)="onFilterChange()" class="px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+        <option value="">Toutes disponibilités</option>
+        <option value="true">Disponible</option>
+        <option value="false">Non disponible</option>
+      </select>
+
+      <input 
+        [(ngModel)]="searchBrand" 
+        (input)="onFilterChange()"
+        placeholder="Rechercher par marque..." 
+        class="flex-1 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+    </div>
+  </div>
+
+  @if (loading$ | async) {
+    <div class="flex justify-center items-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+    </div>
+  }
+
+  @if ((viewMode$ | async) === 'table' && !(loading$ | async)) {
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-slate-50 border-b border-slate-200">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase">Image</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase">Marque</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase">Modèle</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase">Prix</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase">Carburant</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase">Statut</th>
+            <th class="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200">
+          @for (car of cars$ | async; track car.id) {
+            <tr class="hover:bg-slate-50 transition">
+              <td class="px-6 py-4">
+                <img [src]="car.image" [alt]="car.modele" class="w-20 h-14 object-cover rounded border border-slate-200">
+              </td>
+              <td class="px-6 py-4 text-sm font-medium text-slate-900">{{ car.marque?.titre }}</td>
+              <td class="px-6 py-4 text-sm text-slate-600">{{ car.modele }}</td>
+              <td class="px-6 py-4 text-sm font-semibold text-slate-900">{{ car.prix | currency:'EUR':'symbol':'1.0-0' }}</td>
+              <td class="px-6 py-4 text-sm text-slate-600 capitalize">{{ car.carburant }}</td>
+              <td class="px-6 py-4">
+                <span [class]="car.disponibilite ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" 
+                      class="px-2 py-1 text-xs font-medium rounded-full">
+                  {{ car.disponibilite ? 'Disponible' : 'Indisponible' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm space-x-3">
+                <a [routerLink]="['/cars', car.id]" class="text-blue-600 hover:text-blue-700 font-medium cursor-pointer">Voir</a>
+                @if (isAuthenticated$ | async) {
+                  <a [routerLink]="['/cars/edit', car.id]" class="text-slate-600 hover:text-slate-900 font-medium cursor-pointer">Modifier</a>
+                  <button (click)="deleteCar(car.id)" type="button" class="text-red-600 hover:text-red-700 font-medium cursor-pointer">Supprimer</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if ((viewMode$ | async) === 'grid' && !(loading$ | async)) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (car of cars$ | async; track car.id) {
+        <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition">
+          <div class="relative">
+            <img [src]="car.image" [alt]="car.modele" class="w-full h-48 object-cover">
+            <span [class]="car.disponibilite ? 'bg-green-500' : 'bg-red-500'" 
+                  class="absolute top-3 right-3 px-3 py-1 text-xs font-medium text-white rounded-full">
+              {{ car.disponibilite ? 'Disponible' : 'Indisponible' }}
+            </span>
+          </div>
+          <div class="p-5">
+            <h3 class="text-lg font-semibold text-slate-900 mb-1">{{ car.marque?.titre }} {{ car.modele }}</h3>
+            <p class="text-sm text-slate-600 capitalize mb-3">{{ car.carburant }}</p>
+            <p class="text-2xl font-bold text-slate-900 mb-4">{{ car.prix | currency:'EUR':'symbol':'1.0-0' }}</p>
+            <div class="flex gap-2">
+              <a [routerLink]="['/cars', car.id]" class="inline-block flex-1 px-4 py-2 bg-blue-600 text-white text-center rounded hover:bg-blue-700 transition font-medium text-sm">
+                Voir
+              </a>
+              @if (isAuthenticated$ | async) {
+                <a [routerLink]="['/cars/edit', car.id]" class="inline-block flex-1 px-4 py-2 bg-slate-600 text-white text-center rounded hover:bg-slate-700 transition font-medium text-sm">
+                  Modifier
+                </a>
+                <button (click)="deleteCar(car.id)" type="button" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition font-medium text-sm">
+                  Supprimer
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

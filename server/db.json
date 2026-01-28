@@ -1,25 +1,39 @@
 {
   "brands": [
-    { "id": 1, "titre": "Toyota" },
-    { "id": 2, "titre": "Volkswagen" },
-    { "id": 3, "titre": "Tesla" },
-    { "id": 4, "titre": "Dacia" },
-    { "id": 5, "titre": "Peugeot" },
-    { "id": 6, "titre": "Renault" },
-    { "id": 7, "titre": "Mercedes" },
-    { "id": 8, "titre": "Audi" }
+    {
+      "id": 1,
+      "titre": "Toyota"
+    },
+    {
+      "id": 2,
+      "titre": "Volkswagen"
+    },
+    {
+      "id": 3,
+      "titre": "Tesla"
+    },
+    {
+      "id": 4,
+      "titre": "Dacia"
+    },
+    {
+      "id": 5,
+      "titre": "Peugeot"
+    },
+    {
+      "id": 6,
+      "titre": "Renault"
+    },
+    {
+      "id": 7,
+      "titre": "Mercedes"
+    },
+    {
+      "id": 8,
+      "titre": "Audi"
+    }
   ],
   "cars": [
-    {
-      "id": "1",
-      "marque_id": 1,
-      "modele": "Corolla",
-      "prix": 18000,
-      "disponibilite": true,
-      "carburant": "essence",
-      "image": "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=300",
-      "dateDeMiseEnVente": "2022-03-15"
-    },
     {
       "id": "2",
       "marque_id": 2,
