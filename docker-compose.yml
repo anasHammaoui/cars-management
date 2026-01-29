@@ -25,14 +25,14 @@ services:
 
   # Development environment
   dev:
-    image: node:18-alpine
+    image: node:20-alpine
     working_dir: /app
     volumes:
       - .:/app
       - /app/node_modules
     ports:
       - "4200:4200"
-    command: npm start
+    command: sh -c "npm install && npm start"
     environment:
       - NODE_ENV=development
     depends_on:
