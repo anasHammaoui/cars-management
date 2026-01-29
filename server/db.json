@@ -1,35 +1,35 @@
 {
   "brands": [
     {
-      "id": 1,
+      "id": "1",
       "titre": "Toyota"
     },
     {
-      "id": 2,
+      "id": "2",
       "titre": "Volkswagen"
     },
     {
-      "id": 3,
+      "id": "3",
       "titre": "Tesla"
     },
     {
-      "id": 4,
+      "id": "4",
       "titre": "Dacia"
     },
     {
-      "id": 5,
+      "id": "5",
       "titre": "Peugeot"
     },
     {
-      "id": 6,
+      "id": "6",
       "titre": "Renault"
     },
     {
-      "id": 7,
+      "id": "7",
       "titre": "Mercedes"
     },
     {
-      "id": 8,
+      "id": "8",
       "titre": "Audi"
     }
   ],
@@ -123,6 +123,16 @@
       "carburant": "electrique",
       "image": "https://images.unsplash.com/photo-1617704548623-340376564e68?w=300",
       "dateDeMiseEnVente": "2024-05-12"
+    },
+    {
+      "id": "6155",
+      "marque_id": "5",
+      "modele": "Sint asperiores vel",
+      "prix": 7,
+      "carburant": "electrique",
+      "image": "https://www.netemojofa.com.au",
+      "dateDeMiseEnVente": "1999-02-01",
+      "disponibilite": true
     }
   ]
 }

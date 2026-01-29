@@ -6,7 +6,13 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "json-server": "npx json-server --watch server/db.json --port 3000",
+    "dev": "concurrently \"npm run json-server\" \"npm start\"",
+    "docker:build": "docker build -t gestion-concession .",
+    "docker:run": "docker run -p 80:80 gestion-concession",
+    "docker:dev": "docker-compose up dev json-server",
+    "docker:prod": "docker-compose up app json-server"
   },
   "prettier": {
     "printWidth": 100,
@@ -45,9 +51,12 @@
     "@angular/build": "^21.1.1",
     "@angular/cli": "^21.1.1",
     "@angular/compiler-cli": "^21.1.0",
+    "@badeball/cypress-cucumber-preprocessor": "^24.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
     "@tailwindcss/postcss": "^4.1.12",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
+    "cypress": "^15.9.0",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.12",
