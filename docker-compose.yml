@@ -1,0 +1,39 @@
+services:
+  # Angular Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - json-server
+    environment:
+      - NODE_ENV=production
+
+  # JSON Server for API
+  json-server:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./server:/app
+    ports:
+      - "3000:3000"
+    command: npx json-server --watch db.json --host 0.0.0.0 --port 3000
+    environment:
+      - NODE_ENV=development
+
+  # Development environment
+  dev:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    command: sh -c "npm install && npm start"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - json-server
